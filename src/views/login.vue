@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  import jwtDecode from 'jwt-decode'
   export default {
     name: 'login',
     data() {
@@ -68,9 +69,26 @@
       login() {
         this.$refs['loginForm'].validate(valid => {
           if (valid) {
-            this.$message.success('成功')
+            // 发送请求
+            this.$axios.post('/apis/user/login', this.loginData).then(res => {
+              const { token } = res.data
+              // 存储token
+              localStorage.setItem('token', token)
+              // 解析token
+              const decode = jwtDecode(token)
+              // token 信息存储vuex
+              this.$store.dispatch('setAuthenticated', !this.isEmpty(decode))
+              this.$store.dispatch('setUser', decode)
+              this.$router.push('/home')
+            })
           }
         })
+      },
+      isEmpty(value) {
+        return (
+          value === undefined || value === null || (typeof value === 'object' && Object.keys(value).length === 0) ||
+          (typeof value === 'string' && value.trim().length === 0)
+        )
       },
       goToRegister() {
         this.$router.push({ path: '/register' });
