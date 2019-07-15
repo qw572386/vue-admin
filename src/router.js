@@ -24,6 +24,11 @@ export default new Router({
       component: () => import('./views/register')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/login')
+    },
+    {
       path: '*',
       name: '404',
       component: () => import('./views/404')
