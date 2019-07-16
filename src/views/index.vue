@@ -1,15 +1,19 @@
 <template>
   <div>
-    index
+    <HeaderNav />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'home'
+import HeaderNav from '../components/HeadNav'
+export default {
+  name: 'home',
+  components: {
+    HeaderNav
   }
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 
 </style>
