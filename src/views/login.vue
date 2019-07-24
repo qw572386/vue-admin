@@ -10,8 +10,8 @@
             <i slot="prefix" class="el-input__icon el-icon-message"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="passWord">
-          <el-input type="password" v-model="loginData.passWord" placeholder="密码" autocomplete="off" show-password>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="loginData.password" placeholder="密码" autocomplete="off" show-password>
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
@@ -53,13 +53,13 @@ export default {
     return {
       loginData: {
         email: '',
-        passWord: ''
+        password: ''
       },
       rules: {
         email: [
           { validator: checkEmail, tigger: 'blur' }
         ],
-        passWord: [
+        password: [
           { validator: validatePwd, tigger: 'blur' }
         ]
       }
@@ -70,7 +70,8 @@ export default {
       this.$refs['loginForm'].validate(valid => {
         if (valid) {
           // 发送请求
-          this.$axios.post('/apis/user/login', this.loginData).then(res => {
+          this.$axios.post('/api/user/login', this.loginData).then(res => {
+            if (res.code !== 0) throw new Error(res.msg || '登录失败')
             const { token } = res.data
             // 存储token
             localStorage.setItem('token', token)
@@ -80,6 +81,8 @@ export default {
             this.$store.dispatch('setAuthenticated', !this.isEmpty(decode))
             this.$store.dispatch('setUser', decode)
             this.$router.push('/home')
+          }).catch(err => {
+            this.$message.error(err.message)
           })
         }
       })

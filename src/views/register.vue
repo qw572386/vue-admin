@@ -15,8 +15,8 @@
             <i slot="prefix" class="el-input__icon el-icon-message"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="passWord">
-          <el-input type="password" v-model="registerData.passWord" placeholder="密码" autocomplete="off" show-password>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="registerData.password" placeholder="密码" autocomplete="off" show-password>
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
@@ -25,12 +25,12 @@
             <i slot="prefix" class="el-input__icon el-icon-lock"></i>
           </el-input>
         </el-form-item>
-        <el-form-item prop="identity">
+        <!-- <el-form-item prop="identity">
           <el-select class="select-identity" v-model="registerData.identity" placeholder="请选择角色">
             <el-option label="管理员" value='manage'></el-option>
             <el-option label="普通" value='employee'></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <div class="btn-container">
             <el-button class="btn register-btn" type="primary" round size="medium" @click="register('registerData')">立即注册</el-button>
@@ -70,7 +70,7 @@
         if (!value) {
           return callback(new Error('请输入确认密码'))
         }
-        if (value === this.registerData.passWord) {
+        if (value === this.registerData.password) {
           return callback()
         } else {
           return callback(new Error('两次输入密码不一致'))
@@ -80,7 +80,7 @@
         registerData: {
           userName: '',
           email: '',
-          passWord: '',
+          password: '',
           checkPass: '',
           identity: ''
         },
@@ -92,15 +92,15 @@
           email: [
             { validator: checkEmail, tigger: 'blur' }
           ],
-          passWord: [
+          password: [
             { validator: validatePwd, tigger: 'blur' }
           ],
           checkPass: [
             { validator: validatePwd2, tigger: 'blur' }
           ],
-          identity: [
-            { required: true, message: '请选择角色', tigger: 'change' }
-          ]
+          // identity: [
+          //   { required: true, message: '请选择角色', tigger: 'change' }
+          // ]
         }
       }
     },
@@ -108,7 +108,16 @@
       register() {
         this.$refs['registerForm'].validate(valid => {
           if (valid) {
-            this.$message.success('成功')
+            this.$axios.post('/api/user/create', this.registerData).then(res => {
+              if (res.code === 0) {
+                this.$message.success('注册成功')
+                this.goToLogin()
+              } else {
+                throw new Error(res.msg)
+              }
+            }).catch(err => {
+              this.$message.error(err.message)
+            })
           }
         })
       },

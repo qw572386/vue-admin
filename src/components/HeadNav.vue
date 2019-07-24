@@ -1,16 +1,16 @@
 <template>
   <header class="head-nav">
     <el-row class="head-nav-container">
-      <el-col :span="8" class="logo-container">
+      <el-col :span="12" class="logo-container">
         <img src="../assets/images/logo.png" class="logo" alt="" />
         <span class="title">在线管理系统</span>
       </el-col>
-      <el-col :span="16" class="user">
-        <div class="userinfo">
+      <el-col :span="12" class="user">
+        <div class="userinfo hidden-xs-only">
           <el-avatar :size="50" :src="circleUrl"></el-avatar>
-          <el-dropdown @command="setDialogInfo">
+          <el-dropdown @command="setDialogInfo" class="user-dropdown">
             <span class="el-dropdown-link">
-              qiwei<i class="el-icon-arrow-down el-icon--right"></i>
+              {{userName}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="userinfo">个人信息</el-dropdown-item>
@@ -27,8 +27,10 @@
 export default {
   name: 'headNav',
   data () {
+    const { avatar, userName } = this.$store.getters.user
     return {
-      circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      circleUrl: avatar,
+      userName
     }
   },
   methods: {
@@ -90,6 +92,9 @@ export default {
   font-size: 22px;
   margin-left: 10px;
   letter-spacing: 3px
+}
+.userinfo .user-dropdown{
+  line-height: 60px;
 }
 .userinfo .el-dropdown-link{
   padding: 0 10px;

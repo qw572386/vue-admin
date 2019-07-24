@@ -34,7 +34,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     endLoading()
-    return response
+    return response.data
   },
   error => {
     endLoading()
