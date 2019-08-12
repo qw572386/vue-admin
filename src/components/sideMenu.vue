@@ -22,7 +22,7 @@
 export default {
   methods: {
     onSelect(index) {
-      console.log(index)
+      this.$router.push(index)
     }
   }
 };

@@ -15,19 +15,26 @@ export default {
     }
   },
   created () {
-    this.timer = setInterval(() => {
-      this.times--;
-      if (this.times < 0) {
-        this.goToHome()
-      }
-    }, 1000)
+    this.setTime()
   },
   methods: {
     goToHome() {
-      this.timer = null;
+      clearTimeout(this.timer)
       this.$router.replace('/');
+    },
+    setTime() {
+      this.timer = setTimeout(() => {
+        this.times--;
+        if (this.times < 0) {
+          this.goToHome()
+        }
+        this.setTime()
+      }, 1000)
     }
-  }
+  },
+  beforeDestroy () {
+    clearTimeout(this.timer);
+  },
 }
 </script>
 

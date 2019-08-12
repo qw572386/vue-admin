@@ -80,7 +80,7 @@ export default {
             // token 信息存储vuex
             this.$store.dispatch('setAuthenticated', !this.isEmpty(decode))
             this.$store.dispatch('setUser', decode)
-            this.$router.push('/home')
+            this.$router.push('/')
           }).catch(err => {
             this.$message.error(err.message)
           })

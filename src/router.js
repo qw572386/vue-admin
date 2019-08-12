@@ -11,12 +11,18 @@ const router = new Router({
     {
       path: '/',
       name: '_home',
-      redirect: '/home'
+      component: Home
     },
     {
-      path: '/home',
-      name: 'home',
-      component: Home
+      path: '/article',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          name: 'article',
+          component: () => import('./views/article')
+        }
+      ]
     },
     {
       path: '/register',
